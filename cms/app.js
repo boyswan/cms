@@ -1,43 +1,45 @@
-// import 'cms/index.html'
+import 'cms/app.css'
+import 'cms/index.html'
+import { Router, Route, useRouterHistory } from 'react-router'
+import { createHistory } from 'history'
+import { Provider, connect } from 'react-redux';
+import store from 'cms/helpers/store'
 import Actions from 'cms/actions'
 import speechRecognition from 'cms/helpers/speechRecognition'
-
+import { Body, Home } from 'cms/views'
+import { Nav, Save } from 'cms/components'
 
 class App extends React.Component {
 
-  constructor() {
-    super()
-    this.state = {
-      text: 'default text', color: '', fontSize: 18
-    }
-  }
-
   componentDidMount() {
-    this.setUpSpeech()
-  }
-
-
-  setUpSpeech() {
-    speechRecognition(text => {
-      let equals = str => text === str
-      let contains = str => text.includes(str)
-      let textSize = () => text.split(' ')[2]
-
-      switch(true) {
-        case contains('text size'): return this.setState({ fontSize: textSize(text) })
-        case equals('red'): return this.setState({ color: 'red' })
-        case equals('orange'): return this.setState({ color: 'orange' })
-        default: return this.setState({ text })
-      }
-    })
+    Actions.hydrate()
   }
 
   render() {
+    const { children, ui, api } = this.props
     return (
-      <div style={{color: this.state.color, fontSize: `${this.state.fontSize}px` }}> cms here</div>
+      <main>
+        { api.cmsData.pages ? <Save cmsData={api.cmsData}/> : ''}
+        { api.cmsData.pages ? <Nav pages={api.cmsData.pages}/> : ''}
+        { React.cloneElement(children, this.props) }
+      </main>
     )
   }
 }
 
+const Root = connect(state => ({
+  ui: state.ui.toJS(),
+  api: state.api.toJS()
+}))(App)
 
-ReactDOM.render(<App/>, document.getElementById('app'))
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router history={useRouterHistory(createHistory)()} onUpdate={() => window.scrollTo(0, 0)}>
+  		<Route component={Root}>
+  			<Route path="/" component={Home} />
+        <Route path="/:page" component={Body} />
+  		</Route>
+  	</Router>
+  </Provider>,
+document.getElementById('app'))

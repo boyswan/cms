@@ -5,8 +5,7 @@ var WebpackConfig = require('webpack-config').Config
 module.exports = new WebpackConfig().merge({
   context: path.join(__dirname, '..'),
   entry: {
-    'client/client.bundle.js': './client/app.js',
-    'cms/cms.bundle.js': './cms/app.js'
+    'cms': './cms/app.js'
   },
   resolve: {
     extensions: ['', '.js'],

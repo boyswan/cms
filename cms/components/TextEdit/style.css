@@ -1,0 +1,14 @@
+.container {
+  padding: 10px;
+  margin: 10px;
+  background: '#eee';
+}
+
+.title {
+  display: block;
+}
+
+.field {
+  display: block;
+
+}

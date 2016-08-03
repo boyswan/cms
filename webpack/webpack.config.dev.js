@@ -7,14 +7,16 @@ module.exports = new WebpackConfig().extend(base).merge({
   debug: true,
   devtool: 'eval',
   output: {
-    filename: '[name]'
+    filename: 'bundle.js'
   },
-  loaders: [
-    {
-      test: /\.css$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[local]____[hash:base64:4]'
-    }
-  ],
+  module: {
+    loaders: [
+      {
+        test: /\.css$/,
+        loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[local]____[hash:base64:4]'
+      }
+    ]
+  },
   plugins: [
     new webpack.NoErrorsPlugin()
   ]

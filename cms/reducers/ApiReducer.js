@@ -1,35 +1,16 @@
 import createReducer from '../helpers/createReducer'
-import { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-export default (state = new Map({
-  allQuestions: {
-    errors: [],
-    data: [],
-    status: ''
-  },
-  topQuestions: {
-    errors: [],
-    data: [],
-    status: ''
-  },
-  myQuestions: {
-    errors: [],
-    data: [],
-    status: ''
-  }
+export default (state = fromJS({
+  cmsData: {}
 }), action) => createReducer(state, action, {
 
-  ALL_QUESTIONS: (state, {...a}) => (console.log(...a),
-    state.mergeDeep({ allQuestions: { ...a } })),
+  CMS_CONTENT: (state, { data }) => state.mergeDeep({
+    'cmsData': data
+  }),
 
-  MY_QUESTIONS: (state, {...a}) => (console.log(),
-    state.set('myQuestions', { ...a })),
-
-  TOP_QUESTIONS: (state, {...a }) =>
-    state.set('topQuestions', { ...a }),
-
-  SHIFT_QUESTION: (state, () =>
-    state.setIn(['allQuestions', 'data'],
-    state.getIn(['allQuestions', 'data']).shift()))
+  SET_FIELD: (state, { name, index, title, value }) => (console.log(),
+    state.setIn(['cmsData', 'pages', index, 'content', title], value)
+  )
 
 })
