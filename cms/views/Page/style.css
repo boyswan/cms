@@ -1,7 +1,5 @@
 .container {
   display: inline-block;;
-  width: 75%;
+  width: 80%;
   min-width: 250px;
-  background: white;
-  height: 100vh;
 }

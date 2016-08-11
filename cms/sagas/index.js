@@ -35,5 +35,9 @@ export default function* root() {
       yield* takeEvery('SAVE_DATA', () => api(post) )
     }),
 
+		fork(function* () {
+			yield* takeEvery('ADD_POST', ({ data }) => api(post, data))
+		}),
+
   ]
 }

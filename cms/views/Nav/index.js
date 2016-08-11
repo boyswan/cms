@@ -6,5 +6,6 @@ export default ({ pages }) =>
     <ul>
       <li><Link to={`/`}>Home</Link></li>
       {pages.map(({ name }) => <li key={name}><Link to={`/${name}`}>{name}</Link></li>)}
+      <li onClick={() => Action.addPage()}>+ add page</li>
     </ul>
   </nav>

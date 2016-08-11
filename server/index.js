@@ -19,11 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 if (_DEV_) app.use(require('webpack-dev-middleware')(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 
-app.route('/api/cmsContent')
-	.post((req, res) => setJSON(JSON.stringify(req.body), data => res.send({ data })))
+app.use('/public', express.static(path.join(__dirname, './../public')))
 
 app.route('/api/cmsContent')
+	.post((req, res) => setJSON(JSON.stringify(req.body), data => res.send({ data })))
 	.get((req, res, next) => getJSON(data => res.send({ data })))
+
 
 // app.get('/admin', (req, res) => {
 //   res.header('Content-Type', 'text/html');

@@ -3,11 +3,18 @@ import { assign } from 'cms/helpers/utils'
 
 const ApiActions = createActions([
   'hydrate',
-  'saveData'
+  'saveData',
+  'dragPost'
 ])
 
 const UiActions = createActions([
-  'setField'
+  'closeForm',
+  'setField',
+  'addPage',
+  'addPost',
+  'deletePage',
+  'deletePost'
+
 ])
 
 export default assign(

@@ -6,8 +6,8 @@ import { Provider, connect } from 'react-redux';
 import store from 'cms/helpers/store'
 import Actions from 'cms/actions'
 import speechRecognition from 'cms/helpers/speechRecognition'
-import { Body, Home } from 'cms/views'
-import { Nav, Save } from 'cms/components'
+import { Page, Home, Nav } from 'cms/views'
+import { Save, Form } from 'cms/components'
 
 class App extends React.Component {
 
@@ -21,6 +21,7 @@ class App extends React.Component {
       <main>
         { api.cmsData.pages ? <Save cmsData={api.cmsData}/> : ''}
         { api.cmsData.pages ? <Nav pages={api.cmsData.pages}/> : ''}
+        { api.cmsData.pages ? <Form status={ui.form} cmsData={api.cmsData}/> : ''}
         { React.cloneElement(children, this.props) }
       </main>
     )
@@ -38,7 +39,7 @@ ReactDOM.render(
     <Router history={useRouterHistory(createHistory)()} onUpdate={() => window.scrollTo(0, 0)}>
   		<Route component={Root}>
   			<Route path="/" component={Home} />
-        <Route path="/:page" component={Body} />
+        <Route path="/:page" component={Page} />
   		</Route>
   	</Router>
   </Provider>,
