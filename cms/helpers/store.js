@@ -6,9 +6,8 @@ const sagaMiddleware = createSagaMiddleware()
 
 export default createStore(
   reducers,
-  applyMiddleware(
-    sagaMiddleware
-  )
+  window.devToolsExtension ? window.devToolsExtension() : f => f,
+  applyMiddleware(sagaMiddleware)
 )
 
 sagaMiddleware.run(sagas)

@@ -42,9 +42,11 @@ const cardTarget = {
 }))
 class Post extends React.Component {
   render() {
-    const { index, post: {
-      title, created, type, desc, src, body
-    }, isDragging, connectDragSource, connectDropTarget, monitor } = this.props
+    const { index, value, isDragging, connectDragSource, connectDropTarget,
+      post: { title, created, type, desc, src, body } } = this.props
+
+    console.log(body)
+
     return connectDragSource(connectDropTarget(
       <div className={cx(Style.post, { [Style.isDragging]: isDragging })}>
         <span className={Style.title}>{index+1}</span>
@@ -54,7 +56,7 @@ class Post extends React.Component {
           switch(type) {
             case 'image': return <img {...{src}} className={Style.item}/>
             case 'video': return <video {...{src}} className={Style.item}/>
-            default: return <Input {...{src}} action={Actions.setPostField} postIndex={index} value={body} style={Style.item}/>
+            default: return <Input {...{src}} action={Actions.setPostField} postIndex={index} title={'body'} value={body} style={Style.item}/>
           }
         })()}
         <span className={Style.description}>{desc}</span>
@@ -69,11 +71,12 @@ export default class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      "posts": props.value
+      title: props.title,
+      posts: props.value
     }
   }
 
-  moveCard(from, to) {
+  moveCard = (from, to) => {
     const { posts } = this.state
     const { index } = this.props
     const drag = posts[from];
@@ -89,12 +92,17 @@ export default class Container extends React.Component {
 
   }
   render() {
-    const { title } = this.props
-    const { posts } = this.state
+    const { title, posts } = this.state
     return (
       <div className={Style.container}>
         <span className={Style.title}>{title}</span>
-        {posts.map((post, index) => <Post key={post.id} id={post.id} {...{post, index}} moveCard={this.moveCard.bind(this)}/>)}
+        {posts.map((post, index) =>
+          <Post
+            key={index}
+            moveCard={this.moveCard}
+            {...{post, index}}
+          />)
+        }
         <div onClick={() => Actions.addPost()}> + new post </div>
       </div>
     )
