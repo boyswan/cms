@@ -3,5 +3,5 @@ import { Link } from 'react-router'
 
 export default ({ pages }) =>
   <main className={Styles.container}>
-    Home here!!!!
+    Home ere!!!!
   </main>

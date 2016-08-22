@@ -1,19 +1,20 @@
 var webpack = require('webpack');
 var path = require('path')
 var WebpackConfig = require('webpack-config').Config
+var hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
 
 module.exports = new WebpackConfig().merge({
   context: path.join(__dirname, '..'),
   entry: {
-    'cms': './cms/app.js'
+    cms: ['./cms/app.js', hotMiddlewareScript],
   },
   resolve: {
+    root: path.join(__dirname, '..'),
     extensions: ['', '.js'],
-    modules: [
-      path.resolve('.'),
-      path.resolve('./dist'),
-      'node_modules'
-    ]
+    alias: {
+      cms: path.resolve('./cms'),
+      public: path.resolve('./public')
+    }
   },
   plugins: [
     new webpack.ProvidePlugin({

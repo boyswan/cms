@@ -5,8 +5,9 @@ var base = path.join(__dirname, '..', 'webpack/webpack.config.base.js')
 
 module.exports = new WebpackConfig().extend(base).merge({
   debug: true,
-  devtool: 'eval',
+  devtool: 'eval-source-map',
   output: {
+    path: path.join(__dirname, './../dist'),
     filename: 'bundle.js'
   },
   module: {
@@ -18,6 +19,8 @@ module.exports = new WebpackConfig().extend(base).merge({
     ]
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]
 })

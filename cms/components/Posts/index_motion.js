@@ -42,21 +42,22 @@ const cardTarget = {
 }))
 class Post extends React.Component {
   render() {
-    const { index, post, isDragging, connectDragSource, connectDropTarget, monitor } = this.props
-    const { title, created, type, desc, src, body } = post
-
-    return connectDragSource(connectDropTarget(<div className={
-      cx(Style.post, { [Style.isDragging]: isDragging })}>
-      <span className={Style.title}>{title}</span>
-      <span className={Style.title}>Created on: {created}</span>
-      {(() => {
-        switch(type) {
-          case 'image': return <img {...{src}} className={Style.item}/>
-          case 'video': return <video {...{src}} className={Style.item}/>
-          default: return <Input {...{src}} value={body} style={Style.item}/>
-        }
-      })()}
-      <span className={Style.description}>{desc}</span>
+    const { index, post: {
+      title, created, type, desc, src, body
+    }, isDragging, connectDragSource, connectDropTarget, monitor } = this.props
+    return connectDragSource(connectDropTarget(
+      <div className={cx(Style.post, { [Style.isDragging]: isDragging })}>
+        <span className={Style.title}>{index+1}</span>
+        <span className={Style.title}>{title}</span>
+        <span className={Style.title}>Created on: {created}</span>
+        {(() => {
+          switch(type) {
+            case 'image': return <img {...{src}} className={Style.item}/>
+            case 'video': return <video {...{src}} className={Style.item}/>
+            default: return <Input {...{src}} action={Actions.setPostField} postIndex={index} value={body} style={Style.item}/>
+          }
+        })()}
+        <span className={Style.description}>{desc}</span>
     </div>))
   }
 }
@@ -65,41 +66,17 @@ class Post extends React.Component {
 @DragDropContext(HTML5Backend)
 export default class Container extends React.Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      "posts": [
-        {
-          "id": 0,
-          "title": "image1",
-          "created": "234234234",
-          "type": "image",
-          "desc": "this is image1 description",
-          "src": "public/assets/gallery/1.jpg"
-        },
-        {
-          "id": 1,
-          "title": "test example",
-          "created": "234234234",
-          "type": "text",
-          "body": "this is an asfasdf aexzmple of text body"
-        },
-        {
-          "id": 2,
-          "title": "image2",
-          "type": "image",
-          "desc": "this is image2 description",
-          "src": "public/assets/gallery/2.jpg"
-        }
-      ]
+      "posts": props.value
     }
   }
 
   moveCard(from, to) {
     const { posts } = this.state
+    const { index } = this.props
     const drag = posts[from];
-    // console.log(from, to, post)
-    // Actions.dragPost({ from, to, post })
     this.setState(update(this.state, {
       posts: {
         $splice: [
@@ -108,10 +85,11 @@ export default class Container extends React.Component {
         ]
       }
     }));
+    Actions.reorderPosts({ posts: this.state.posts, index })
 
   }
   render() {
-    const { title, value } = this.props
+    const { title } = this.props
     const { posts } = this.state
     return (
       <div className={Style.container}>

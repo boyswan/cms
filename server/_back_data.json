@@ -1,52 +1,70 @@
 {
-  "info": "example info outside of pages",
-  "pages": [
-
-    {
-      "name": "page1",
-      "content": {
-        "header": "Example header",
-        "intro": "Example intro",
-        "body": "Example body",
-        "images": [
-          {
-            "title": "image1",
-            "description": "this is image1 description",
-            "source": "dist/assets/images/image01.jpg"
-          },
-          {
-            "title": "image2",
-            "description": "this is image2 description",
-            "source": "dist/assets/images/image02.jpg"
-          }
-        ],
-        "videos": []
+   "info":"example info outside of pages",
+   "pages":[
+      {
+         "name":"page1",
+         "content":{
+            "header":"egg",
+            "intro":"asdfasdfasdfadsfasdfasdf",
+            "body":"this is updated fdfdfdf",
+            "posts":[
+               {
+                  "id":1,
+                  "title":"test example",
+                  "created":"234234234",
+                  "type":"text",
+                  "body":"this is an asfasdf aexzmple of text body"
+               },
+               {
+                  "id":0,
+                  "title":"image1",
+                  "created":"234234234",
+                  "type":"image",
+                  "desc":"this is image1 description",
+                  "src":"public/assets/gallery/1.jpg"
+               },
+               {
+                  "id":2,
+                  "title":"image2",
+                  "type":"image",
+                  "desc":"this is image2 description",
+                  "src":"public/assets/gallery/2.jpg"
+               }
+            ]
+         }
+      },
+      {
+         "name":"page2",
+         "content":{
+            "header":"this is a page 2 header",
+            "intro":"Example234 intro",
+            "body":"Example34 body",
+            "posts":[
+               {
+                  "id":0,
+                  "title":"image1",
+                  "created":"234234234",
+                  "type":"image",
+                  "desc":"this is image1 description",
+                  "src":"public/assets/gallery/3.jpg"
+               },
+               {
+                  "id":2,
+                  "title":"image2",
+                  "type":"image",
+                  "desc":"this is image2 description",
+                  "src":"public/assets/gallery/4.jpg"
+               },
+               {
+                  "id":1,
+                  "title":"image1",
+                  "created":"234234234",
+                  "type":"image",
+                  "desc":"this is image1 description",
+                  "src":"public/assets/gallery/3.jpg"
+               }
+            ]
+         }
       }
-    },
-
-    {
-      "name": "page2",
-      "content": {
-        "header": "Example234 header",
-        "intro": "Example234 intro",
-        "body": "Example34 body",
-        "images": [
-          {
-            "title": "image1",
-            "description": "this is image1 description",
-            "source": "dist/assets/images/image01.jpg"
-          },
-          {
-            "title": "image2",
-            "description": "this is image2 description",
-            "source": "dist/assets/images/image02.jpg"
-          }
-        ],
-        "videos": []
-      }
-    }
-
-
-  ]
-
+   ]
 }

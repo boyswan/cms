@@ -13,9 +13,4 @@ export default ({
     </div>
   )
 
-  // <div className={Style.container}>
-  // <span className={Style.title}>{title}</span>
-  // <input className={style} type='text' value={value} onChange={e => Actions.setField({ name, index, title, value: e.target.value })}/>
-  // </div>
-
 }

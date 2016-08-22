@@ -4,12 +4,14 @@ import { assign } from 'cms/helpers/utils'
 const ApiActions = createActions([
   'hydrate',
   'saveData',
-  'dragPost'
+  'dragPost',
+  'reorderPosts'
 ])
 
 const UiActions = createActions([
   'closeForm',
   'setField',
+  'setPostField',
   'addPage',
   'addPost',
   'deletePage',

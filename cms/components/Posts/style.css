@@ -4,12 +4,16 @@
 }
 
 .post {
+  /*position: absolute;*/
   margin-bottom: 10px;
   padding: 10px;
   background: white;
   width: 50%;
   opacity: 1;
   transition: all 0.2s ease-in-out;
+  /*height: 300px;
+  overflow: hidden;*/
+  -webkit-user-select: none;
 }
 
 .isDragging {
@@ -20,6 +24,7 @@
 }
 
 .title {
+  user-select: none;
   display: block;
 }
 
@@ -30,4 +35,8 @@
 .item {
   display: block;
   width: 100%;
+}
+
+.noClick {
+  pointer-events: none;
 }
