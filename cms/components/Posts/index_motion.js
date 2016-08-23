@@ -42,10 +42,11 @@ const cardTarget = {
 }))
 class Post extends React.Component {
   render() {
-    const { index, value, isDragging, connectDragSource, connectDropTarget,
-      post: { title, created, type, desc, src, body } } = this.props
 
-    console.log(body)
+    const { index, value, pageIndex, isDragging, connectDragSource, connectDropTarget,
+      post: { title, created, type, desc, src, body }
+    } = this.props
+
 
     return connectDragSource(connectDropTarget(
       <div className={cx(Style.post, { [Style.isDragging]: isDragging })}>
@@ -56,7 +57,13 @@ class Post extends React.Component {
           switch(type) {
             case 'image': return <img {...{src}} className={Style.item}/>
             case 'video': return <video {...{src}} className={Style.item}/>
-            default: return <Input {...{src}} action={Actions.setPostField} postIndex={index} title={'body'} value={body} style={Style.item}/>
+            default: return <Input
+              action={Actions.setPostField}
+              postIndex={index}
+              pageIndex={pageIndex}
+              title={'body'}
+              value={value[index].body}
+              style={Style.item}/>
           }
         })()}
         <span className={Style.description}>{desc}</span>
@@ -78,7 +85,7 @@ export default class Container extends React.Component {
 
   moveCard = (from, to) => {
     const { posts } = this.state
-    const { index } = this.props
+    const { pageIndex } = this.props
     const drag = posts[from];
     this.setState(update(this.state, {
       posts: {
@@ -88,20 +95,18 @@ export default class Container extends React.Component {
         ]
       }
     }));
-    Actions.reorderPosts({ posts: this.state.posts, index })
+    Actions.reorderPosts({ posts: this.state.posts, pageIndex })
 
   }
   render() {
     const { title, posts } = this.state
+    const { value } = this.props
     return (
       <div className={Style.container}>
         <span className={Style.title}>{title}</span>
-        {posts.map((post, index) =>
-          <Post
-            key={index}
-            moveCard={this.moveCard}
-            {...{post, index}}
-          />)
+        {
+          posts.map((post, index) =>
+            <Post key={index} moveCard={this.moveCard} {...{ value, post, index}} />)
         }
         <div onClick={() => Actions.addPost()}> + new post </div>
       </div>

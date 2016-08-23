@@ -9,21 +9,15 @@ export default (state = fromJS({
     'cmsData': data
   }),
 
-  SET_FIELD: (state, { name, index, title, value }) => (console.log(),
-    state.setIn(['cmsData', 'pages', index, 'content', title], value)
+  SET_FIELD: (state, { pageIndex, title, value }) => (console.log(),
+    state.setIn(['cmsData', 'pages', pageIndex, 'content', title], value)
   ),
 
-  SET_POST_FIELD: (state, { name, index, title, value, postIndex }) => {
-    // console.log('postIndex: ', postIndex)
-    // console.log('title: ', title)
-    // console.log('value: ', value)
-    // console.log('______________')
-    // console.log(state.toJS().cmsData.pages[0].content.posts[0].body)
-    return state.setIn(['cmsData', 'pages', index, 'content', 'posts', 0, 'body'], value)
-  },
+  SET_POST_FIELD: (state, { pageIndex, postIndex, title, value }) =>
+    state.setIn(['cmsData', 'pages', 0, 'content', 'posts', 0, 'body'], value),
 
-  REORDER_POSTS: (state, { posts, index }) => (console.log(),
-    state.setIn(['cmsData', 'pages', index, 'content', 'posts'], posts)
+  REORDER_POSTS: (state, { posts, pageIndex }) => (console.log(),
+    state.setIn(['cmsData', 'pages', pageIndex, 'content', 'posts'], posts)
   )
 
 })

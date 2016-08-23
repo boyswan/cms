@@ -6,7 +6,6 @@ import cms from './cms'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import historyApiFallback   from 'connect-history-api-fallback';
 import config from '../webpack/webpack.config.dev'
 import { setJSON, getJSON } from './utils'
 
@@ -45,7 +44,7 @@ if (__DEV__) {
   })
 
 } else {
-	
+
 	app.get('*', (req, res) => {
 	  res.header('Content-Type', 'text/html');
 	  fs.createReadStream(path.resolve(`${PUBLIC_PATH}/cms/index.html`)).pipe(res);

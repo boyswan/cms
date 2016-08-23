@@ -4,9 +4,8 @@ import Actions from 'cms/actions'
 export default ({
   action,
   style = Style.field,
-  name = '',
-  index = 0,
-  postIndex = null,
+  pageIndex,
+  postIndex,
   title = '',
   value = ''
 }) => (console.log(),
@@ -17,8 +16,8 @@ export default ({
       type='text'
       value={value}
       onChange={e => {
-        console.log(e.target.value)
-        return action({ name, index, title, postIndex, value: e.target.value })
+
+        return action({ pageIndex, title, postIndex, value: e.target.value })
       }}/>
   </div>
 )
