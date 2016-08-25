@@ -1,4 +1,4 @@
-import { over, curry, compose, lensProp, lensIndex, set, lensPath } from 'ramda'
+import { insert, remove, over, compose, lensProp, lensIndex, set, lensPath } from 'ramda'
 import createReducer from '../helpers/createReducer'
 
 const pageLens = pageIndex => compose(
@@ -24,12 +24,6 @@ const postFieldLens = ({ pageIndex, postIndex }) => compose(
   lensProp('body')
 )
 
-const move = (from, to) => array => {
-  const element = array.splice(from, 1)[0]
-  array.splice(to, 0, element);
-  return array
-}
-
 export default (state = { cmsData: {} }, action) =>
   createReducer(state, action, {
 
@@ -45,9 +39,8 @@ export default (state = { cmsData: {} }, action) =>
       return set(postFieldLens(a), value)(state)
     },
 
-
     REORDER_POSTS: (state, { from, to, ...a }) => {
-      return over(postLens(a), move(from, to))(state)
+      return over(postLens(a), array => insert(to, array[from], remove(from, 1, array)))(state)
     }
 
   })
