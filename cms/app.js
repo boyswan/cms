@@ -30,7 +30,7 @@ class App extends React.Component {
 
 const Root = connect(state => ({
   ui: state.ui.toJS(),
-  api: state.api.toJS()
+  api: state.api
 }))(App)
 
 

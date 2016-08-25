@@ -1,23 +1,53 @@
+import { over, curry, compose, lensProp, lensIndex, set, lensPath } from 'ramda'
 import createReducer from '../helpers/createReducer'
-import { fromJS } from 'immutable'
 
-export default (state = fromJS({
-  cmsData: {}
-}), action) => createReducer(state, action, {
+const pageLens = pageIndex => compose(
+  lensPath(['cmsData', 'pages']),
+  lensIndex(pageIndex),
+)
 
-  CMS_CONTENT: (state, { data }) => state.mergeDeep({
-    'cmsData': data
-  }),
+const contentLens = ({ pageIndex, title }) => compose(
+  pageLens(pageIndex),
+  lensProp('content'),
+  lensProp(title)
+)
 
-  SET_FIELD: (state, { pageIndex, title, value }) => (console.log(),
-    state.setIn(['cmsData', 'pages', pageIndex, 'content', title], value)
-  ),
+const postLens = ({ pageIndex }) => compose(
+  pageLens(pageIndex),
+  lensPath(['content', 'posts'])
+)
 
-  SET_POST_FIELD: (state, { pageIndex, postIndex, title, value }) =>
-    state.setIn(['cmsData', 'pages', 0, 'content', 'posts', 0, 'body'], value),
+const postFieldLens = ({ pageIndex, postIndex }) => compose(
+  pageLens(pageIndex),
+  lensPath(['content', 'posts']),
+  lensIndex(postIndex),
+  lensProp('body')
+)
 
-  REORDER_POSTS: (state, { posts, pageIndex }) => (console.log(),
-    state.setIn(['cmsData', 'pages', pageIndex, 'content', 'posts'], posts)
-  )
+const move = (from, to) => array => {
+  const element = array.splice(from, 1)[0]
+  array.splice(to, 0, element);
+  return array
+}
 
-})
+export default (state = { cmsData: {} }, action) =>
+  createReducer(state, action, {
+
+    CMS_CONTENT: (state, { data }) => {
+      return set(lensProp('cmsData'), data)(state)
+    },
+
+    SET_FIELD: (state, { value, ...a }) => {
+      return set(contentLens(a), value)(state)
+    },
+
+    SET_POST_FIELD: (state, { value, ...a }) => {
+      return set(postFieldLens(a), value)(state)
+    },
+
+
+    REORDER_POSTS: (state, { from, to, ...a }) => {
+      return over(postLens(a), move(from, to))(state)
+    }
+
+  })

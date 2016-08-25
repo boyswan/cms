@@ -33,6 +33,29 @@ const cardTarget = {
   }
 };
 
+@DragDropContext(HTML5Backend)
+export default class Container extends React.Component {
+
+  moveCard = (from, to) => {
+    const { pageIndex } = this.props
+    Actions.reorderPosts({ pageIndex, from, to })
+  }
+
+  render() {
+    const { value, pageIndex, title } = this.props
+    return (
+      <div className={Style.container}>
+        <span className={Style.title}>{title}</span>
+        {
+          value.map((post, index) =>
+            <Post key={index} moveCard={this.moveCard} {...{ pageIndex, value, post, index}} />)
+        }
+        <div onClick={() => Actions.addPost()}> + new post </div>
+      </div>
+    )
+  }
+}
+
 
 @DropTarget('CARD', cardTarget, connect => ({ connectDropTarget: connect.dropTarget() }))
 @DragSource('CARD', cardSource, (connect, monitor) => ({
@@ -46,7 +69,6 @@ class Post extends React.Component {
     const { index, value, pageIndex, isDragging, connectDragSource, connectDropTarget,
       post: { title, created, type, desc, src, body }
     } = this.props
-
 
     return connectDragSource(connectDropTarget(
       <div className={cx(Style.post, { [Style.isDragging]: isDragging })}>
@@ -68,48 +90,5 @@ class Post extends React.Component {
         })()}
         <span className={Style.description}>{desc}</span>
     </div>))
-  }
-}
-
-
-@DragDropContext(HTML5Backend)
-export default class Container extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      title: props.title,
-      posts: props.value
-    }
-  }
-
-  moveCard = (from, to) => {
-    const { posts } = this.state
-    const { pageIndex } = this.props
-    const drag = posts[from];
-    this.setState(update(this.state, {
-      posts: {
-        $splice: [
-          [from, 1],
-          [to, 0, drag]
-        ]
-      }
-    }));
-    Actions.reorderPosts({ posts: this.state.posts, pageIndex })
-
-  }
-  render() {
-    const { title, posts } = this.state
-    const { value } = this.props
-    return (
-      <div className={Style.container}>
-        <span className={Style.title}>{title}</span>
-        {
-          posts.map((post, index) =>
-            <Post key={index} moveCard={this.moveCard} {...{ value, post, index}} />)
-        }
-        <div onClick={() => Actions.addPost()}> + new post </div>
-      </div>
-    )
   }
 }

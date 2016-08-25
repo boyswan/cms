@@ -47,6 +47,7 @@
     "joi": "^9.0.4",
     "lodash.range": "^3.2.0",
     "multer": "^1.2.0",
+    "ramda": "^0.22.1",
     "react": "^15.0.2",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",

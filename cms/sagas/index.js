@@ -16,7 +16,7 @@ function* hydrate() {
 
 function* api(method, payload) {
 	try {
-		let cmsData = yield select(state => state.api.toJS().cmsData)
+		const cmsData = yield select(({ api }) => api.cmsData)
 		const { data: { data } } = yield call(method, Url.cmsContent, cmsData)
 		yield put({ type: 'CMS_CONTENT', data })
 	} catch (errors) {
