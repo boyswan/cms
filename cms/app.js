@@ -29,7 +29,7 @@ class App extends React.Component {
 }
 
 const Root = connect(state => ({
-  ui: state.ui.toJS(),
+  ui: state.ui,
   api: state.api
 }))(App)
 

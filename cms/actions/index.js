@@ -1,5 +1,5 @@
-import createActions from 'cms/helpers/createActions'
-import { assign } from 'cms/helpers/utils'
+import createActions from '../helpers/createActions'
+import { assign } from '../helpers/utils'
 
 const ApiActions = createActions([
   'hydrate',

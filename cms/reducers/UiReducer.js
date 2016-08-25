@@ -1,17 +1,14 @@
+import { insert, remove, over, compose, lensProp, lensIndex, set, lensPath } from 'ramda'
 import createReducer from '../helpers/createReducer'
-import { Map } from 'immutable'
 
-export default (state = new Map({
+export default (state = {
   form: false
-}), action) => createReducer(state, action, {
+}, action) => createReducer(state, action, {
 
-  CLOSE_FORM: (state, { status }) => (console.log(),
-    state.set('form', false)
-  ),
+  CLOSE_FORM: ({ status }) =>
+    set(lensProp('form'), false),
 
-  ADD_POST: (state, { status }) => (console.log(),
-    state
-      .set('form', true)
-  )
+  ADD_POST: ({ status }) =>
+    set(lensProp('form'), true)
 
 })

@@ -1,6 +1,5 @@
 import Styles from './style.css'
-import { Input } from 'cms/components'
-import Posts from 'cms/components/Posts/index_motion'
+import { Input, Posts } from '../../components'
 import Actions from '../../actions'
 
 export default ({

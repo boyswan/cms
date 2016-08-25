@@ -6,7 +6,7 @@ const pageLens = pageIndex => compose(
   lensIndex(pageIndex),
 )
 
-const contentLens = ({ pageIndex, title }) => compose(
+const contentLens = ( pageIndex, title ) => compose(
   pageLens(pageIndex),
   lensProp('content'),
   lensProp(title)
@@ -27,20 +27,16 @@ const postFieldLens = ({ pageIndex, postIndex }) => compose(
 export default (state = { cmsData: {} }, action) =>
   createReducer(state, action, {
 
-    CMS_CONTENT: (state, { data }) => {
-      return set(lensProp('cmsData'), data)(state)
-    },
+    CMS_CONTENT: ({ data }) =>
+      set(lensProp('cmsData'), data),
 
-    SET_FIELD: (state, { value, ...a }) => {
-      return set(contentLens(a), value)(state)
-    },
+    SET_FIELD: ({ value, pageIndex, title }) =>
+      set(contentLens(pageIndex, title), value),
 
-    SET_POST_FIELD: (state, { value, ...a }) => {
-      return set(postFieldLens(a), value)(state)
-    },
+    SET_POST_FIELD: ({ value, ...a }) =>
+      set(postFieldLens(a), value),
 
-    REORDER_POSTS: (state, { from, to, ...a }) => {
-      return over(postLens(a), array => insert(to, array[from], remove(from, 1, array)))(state)
-    }
+    REORDER_POSTS: ({ from, to, ...a }) =>
+      over(postLens(a), array => insert(to, array[from], remove(from, 1, array)))
 
   })

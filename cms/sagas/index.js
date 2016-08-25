@@ -20,7 +20,7 @@ function* api(method, payload) {
 		const { data: { data } } = yield call(method, Url.cmsContent, cmsData)
 		yield put({ type: 'CMS_CONTENT', data })
 	} catch (errors) {
-		yield console.log({ type: 'CMS_CONTENT', data: [], status: 'FAIL', message: errors.data })
+		yield console.log({ type: 'CMS_CONTENT', message: errors.data })
 	}
 }
 

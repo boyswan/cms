@@ -1,6 +1,6 @@
 import { identity } from './utils'
 
 export default (state, action, reducers) => {
-  const reducer = reducers[action.type] || identity
-  return reducer(state, action)
+  const fn = reducers[action.type] || (x => y => y)
+  return fn(action)(state);
 }
