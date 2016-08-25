@@ -7,7 +7,7 @@ import store from 'cms/helpers/store'
 import Actions from 'cms/actions'
 import speechRecognition from 'cms/helpers/speechRecognition'
 import { Page, Home, Nav } from 'cms/views'
-import { Save, Form } from 'cms/components'
+import { Save, Form, Gallery } from 'cms/components'
 
 class App extends React.Component {
 
@@ -21,7 +21,8 @@ class App extends React.Component {
       <main>
         { api.cmsData.pages ? <Save cmsData={api.cmsData}/> : ''}
         { api.cmsData.pages ? <Nav pages={api.cmsData.pages}/> : ''}
-        { api.cmsData.pages ? <Form status={ui.form} cmsData={api.cmsData}/> : ''}
+        { api.cmsData.pages ? <Form status={api.form} cmsData={api.cmsData}/> : ''}
+        { api.cmsData.pages ? <Gallery status={api.gallery} cmsData={api.cmsData}/> : ''}
         { React.cloneElement(children, this.props) }
       </main>
     )
@@ -29,7 +30,6 @@ class App extends React.Component {
 }
 
 const Root = connect(state => ({
-  ui: state.ui,
   api: state.api
 }))(App)
 

@@ -7,10 +7,9 @@ export default ({
   status
 }) => {
   console.log(status)
-
   return (
-    <div className={cx(Style.dim, { [Style.noDim]: !status })} onClick={() => Actions.toggleForm()}>
-      <div className={Style.container}> form </div>
+    <div className={cx(Style.dim, { [Style.noDim]: !status })} onClick={() => Actions.toggleGallery()}>
+      <div className={Style.container}> gallery </div>
     </div>
   )
 

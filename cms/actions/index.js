@@ -5,18 +5,19 @@ const ApiActions = createActions([
   'hydrate',
   'saveData',
   'dragPost',
-  'reorderPosts'
+  'reorderPosts',
+  'toggleGallery'
 ])
 
 const UiActions = createActions([
-  'closeForm',
+  'toggleForm',
   'setField',
   'setPostField',
+  'setPostImage',
   'addPage',
   'addPost',
   'deletePage',
   'deletePost'
-
 ])
 
 export default assign(

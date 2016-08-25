@@ -1,6 +1,6 @@
 import Style from './style.css'
 import Actions from 'cms/actions'
-import { Input } from 'cms/components'
+import { Input, Image } from 'cms/components'
 import update from 'react/lib/update';
 import cx from 'classnames'
 
@@ -73,8 +73,19 @@ class Post extends React.Component {
         <span className={Style.title}>Created on: {post.created}</span>
         {(() => {
           switch(post.type) {
-            case 'image': return <img src={post.src} className={Style.item}/>
-            case 'video': return <video src={post.src} className={Style.item}/>
+            case 'image': return <div>
+              <Image
+                action={Actions.setPostImage}
+                src={post.src}
+                postIndex={index}
+                pageIndex={pageIndex}
+                title={'src'}
+                className={Style.item}/>
+                <span className={Style.description}>{post.desc}</span>
+              </div>
+            case 'video': return <video
+              src={post.src}
+              className={Style.item}/>
             default: return <Input
               action={Actions.setPostField}
               postIndex={index}
@@ -84,7 +95,6 @@ class Post extends React.Component {
               style={Style.item}/>
           }
         })()}
-        <span className={Style.description}>{post.desc}</span>
     </div>))
   }
 }
