@@ -23,7 +23,7 @@ class App extends React.Component {
         { api.cmsData.pages ? <Nav pages={api.cmsData.pages}/> : ''}
         { api.cmsData.pages ? <Form status={api.form} cmsData={api.cmsData}/> : ''}
         { api.cmsData.pages ? <Gallery status={api.gallery} cmsData={api.cmsData}/> : ''}
-        { React.cloneElement(children, this.props) }
+        { api.cmsData.pages ? React.cloneElement(children, this.props) : '' }
       </main>
     )
   }
@@ -32,7 +32,6 @@ class App extends React.Component {
 const Root = connect(state => ({
   api: state.api
 }))(App)
-
 
 ReactDOM.render(
   <Provider store={store}>

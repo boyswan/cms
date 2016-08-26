@@ -1,9 +1,15 @@
-import { combineReducers } from 'redux';
 import createReducer from '../helpers/createReducer'
 import { insert, remove, over, lensProp, set } from 'ramda'
-import { pageLens, contentLens, postLens, postFieldLens, postImageLens } from './paths'
 
-const api = (state = {
+import {
+  pageLens,
+  contentLens,
+  postLens,
+  postFieldLens,
+  postImageLens
+} from './paths'
+
+export default (state = {
   cmsData: {},
   form: false,
   gallery: false
@@ -32,6 +38,3 @@ const api = (state = {
     TOGGLE_GALLERY: () => set(lensProp('gallery'), false)
 
   })
-
-
-export default combineReducers({ api });

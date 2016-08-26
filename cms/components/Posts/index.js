@@ -35,20 +35,16 @@ const cardTarget = {
 
 @DragDropContext(HTML5Backend)
 export default class Container extends React.Component {
-
-  moveCard = (from, to) => {
-    const { pageIndex } = this.props
-    Actions.reorderPosts({ pageIndex, from, to })
-  }
-
   render() {
-    const { value, pageIndex, title } = this.props
-    const singlePost = value.map((post, index) =>
-      <Post key={index} moveCard={this.moveCard} {...{ pageIndex, value, post, index}} />
+    const { posts, pageIndex = 1 } = this.props
+
+    const singlePost = posts.map((post, index) =>
+      <Post key={index} moveCard={(from, to) => Actions.reorderPosts({ pageIndex, from, to })} {...{ pageIndex, post, index}} />
     )
+
     return (
       <div className={Style.container}>
-        <span className={Style.title}>{title}</span>
+        <span className={Style.title}>Posts</span>
         {singlePost}
         <div onClick={() => Actions.addPost()}> + new post </div>
       </div>
@@ -65,7 +61,7 @@ export default class Container extends React.Component {
 }))
 class Post extends React.Component {
   render() {
-    const { index, value, pageIndex, isDragging, connectDragSource, connectDropTarget, post } = this.props
+    const { index, pageIndex, isDragging, connectDragSource, connectDropTarget, post } = this.props
     return connectDragSource(connectDropTarget(
       <div className={cx(Style.post, { [Style.isDragging]: isDragging })}>
         <span className={Style.title}>{index+1}</span>
@@ -75,13 +71,13 @@ class Post extends React.Component {
           switch(post.type) {
             case 'image': return <div>
               <Image
-                action={Actions.setPostImage}
+                id={post.id}
                 src={post.src}
                 postIndex={index}
                 pageIndex={pageIndex}
                 title={'src'}
                 className={Style.item}/>
-                <span className={Style.description}>{post.desc}</span>
+                <span className={Style.description}>{post.body}</span>
               </div>
             case 'video': return <video
               src={post.src}
@@ -91,7 +87,7 @@ class Post extends React.Component {
               postIndex={index}
               pageIndex={pageIndex}
               title={'body'}
-              value={value[index].body}
+              value={post.body}
               style={Style.item}/>
           }
         })()}

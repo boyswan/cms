@@ -1,15 +1,11 @@
 import createActions from '../helpers/createActions'
-import { assign } from '../helpers/utils'
 
-const ApiActions = createActions([
+export default createActions([
   'hydrate',
   'saveData',
   'dragPost',
   'reorderPosts',
-  'toggleGallery'
-])
-
-const UiActions = createActions([
+  'toggleGallery',
   'toggleForm',
   'setField',
   'setPostField',
@@ -19,8 +15,3 @@ const UiActions = createActions([
   'deletePage',
   'deletePost'
 ])
-
-export default assign(
-  UiActions,
-  ApiActions
-)

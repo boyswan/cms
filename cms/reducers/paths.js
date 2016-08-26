@@ -8,25 +8,24 @@ export const pageLens = pageIndex => compose(
 
 export const contentLens = ( pageIndex, title ) => compose(
   pageLens(pageIndex),
-  lensProp('content'),
   lensProp(title)
 )
 
 export const postLens = ( pageIndex ) => compose(
   pageLens(pageIndex),
-  lensPath(['content', 'posts'])
+  lensProp('posts')
 )
 
 export const postFieldLens = ( pageIndex, postIndex ) => compose(
   pageLens(pageIndex),
-  lensPath(['content', 'posts']),
+  lensProp('posts'),
   lensIndex(postIndex),
   lensProp('body')
 )
 
 export const postImageLens = ( pageIndex, postIndex ) => compose(
   pageLens(pageIndex),
-  lensPath(['content', 'posts']),
+  lensProp('posts'),
   lensIndex(postIndex),
   lensProp('src')
 )
