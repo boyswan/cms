@@ -7,7 +7,7 @@ export default createActions([
   'reorderPosts',
   'toggleGallery',
   'toggleForm',
-  'setField',
+  'setContentField',
   'setPostField',
   'setPostImage',
   'addPage',

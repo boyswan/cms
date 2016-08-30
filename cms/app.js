@@ -17,15 +17,19 @@ class App extends React.Component {
 
   render() {
     const { children, ui, api } = this.props
-    return (
-      <main>
-        { api.cmsData.pages ? <Save cmsData={api.cmsData}/> : ''}
-        { api.cmsData.pages ? <Nav pages={api.cmsData.pages}/> : ''}
-        { api.cmsData.pages ? <Form status={api.form} cmsData={api.cmsData}/> : ''}
-        { api.cmsData.pages ? <Gallery status={api.gallery} cmsData={api.cmsData}/> : ''}
-        { api.cmsData.pages ? React.cloneElement(children, this.props) : '' }
-      </main>
-    )
+    if (api.cmsData.pages) {
+      return (
+        <main>
+          <Save cmsData={api.cmsData}/>
+          <Nav pages={api.cmsData.pages}/>
+          <Form status={api.form} cmsData={api.cmsData}/>
+          <Gallery status={api.gallery} cmsData={api.cmsData}/>
+          { React.cloneElement(children, this.props) }
+        </main>
+      )
+    } else {
+      return <main> loading ... </main>
+    }
   }
 }
 
@@ -38,7 +42,7 @@ ReactDOM.render(
     <Router history={useRouterHistory(createHistory)()} onUpdate={() => window.scrollTo(0, 0)}>
   		<Route component={Root}>
   			<Route path="/" component={Home} />
-        <Route path="/:page" component={Page} />
+        <Route path="/:pageID" component={Page} />
   		</Route>
   	</Router>
   </Provider>,

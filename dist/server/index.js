@@ -52,43 +52,7 @@ var app = (0, _express2.default)();
 
 app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
-
-if (__DEV__) {
-	(function () {
-		var compiler = (0, _webpack2.default)(_webpackConfig2.default);
-		var middleware = (0, _webpackDevMiddleware2.default)(compiler, {
-			publicPath: _webpackConfig2.default.output.publicPath,
-			contentBase: 'cms',
-			stats: {
-				hot: true,
-				inline: true,
-				colors: true,
-				hash: false,
-				timings: true,
-				chunks: false,
-				chunkModules: false,
-				modules: false
-			}
-		});
-
-		app.use(middleware);
-		app.use((0, _webpackHotMiddleware2.default)(compiler));
-		app.use('*', function (req, res) {
-			// res.header('Content-Type', 'text/html');
-			// fs.createReadStream(path.resolve(`${PUBLIC_PATH}/cms/index.html`)).pipe(res);
-			res.write(middleware.fileSystem.readFileSync(_path2.default.join(__dirname, '..', 'cms/index.html')));
-			res.end();
-		});
-		// app.use(require('webpack-dev-middleware')(compiler, { noInfo: true, publicPath: config.output.publicPath }))
-	})();
-} else {
-	app.get('*', function (req, res) {
-		res.header('Content-Type', 'text/html');
-		_fs2.default.createReadStream(_path2.default.resolve(PUBLIC_PATH + '/cms/index.html')).pipe(res);
-	});
-}
-
-app.use('/public', _express2.default.static(_path2.default.join(__dirname, './../public')));
+app.use('/public', _express2.default.static(_path2.default.join(__dirname, '..', 'public')));
 
 app.route('/api/cmsContent').post(function (req, res) {
 	return (0, _utils.setJSON)((0, _stringify2.default)(req.body), function (data) {
@@ -100,15 +64,32 @@ app.route('/api/cmsContent').post(function (req, res) {
 	});
 });
 
-// app.route('/api/post')
-// 	.post((req, res) => )
+if (__DEV__) {
+	(function () {
+		var compiler = (0, _webpack2.default)(_webpackConfig2.default);
+		var middleware = (0, _webpackDevMiddleware2.default)(compiler, {
+			noInfo: true, publicPath: _webpackConfig2.default.output.publicPath
+		});
 
-// app.get('/admin', (req, res) => {
-//   res.header('Content-Type', 'text/html');
-//   console.log('server hit')
-//   fs.createReadStream(path.resolve(`${PUBLIC_PATH}/cms/index.html`)).pipe(res);
-// })
+		app.use(middleware);
+		app.use((0, _webpackHotMiddleware2.default)(compiler, {
+			log: console.log,
+			path: '/__webpack_hmr',
+			heartbeat: 10 * 1000
+		}));
 
+		app.get('*', function response(req, res) {
+			res.write(middleware.fileSystem.readFileSync(_path2.default.join(__dirname, '..', 'dist/index.html')));
+			res.end();
+		});
+	})();
+} else {
+
+	app.get('*', function (req, res) {
+		res.header('Content-Type', 'text/html');
+		_fs2.default.createReadStream(_path2.default.resolve(PUBLIC_PATH + '/cms/index.html')).pipe(res);
+	});
+}
 
 app.listen(PORT, function () {
 	return console.log('listening on port ' + PORT);

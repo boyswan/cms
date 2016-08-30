@@ -1,41 +1,26 @@
 import Styles from './style.css'
-import { map, filter, reduce } from 'ramda'
+import { map, filter, compose, addIndex, head, merge } from 'ramda'
 import { Input, Posts } from '../../components'
+import { mapIndex, noUndefined } from '../../helpers/utils'
 import Actions from '../../actions'
 
+const selectPage = (value, key, pageID) => { if (value.name === pageID) return merge({ pageIndex: key }, value) }
+const input = ([ title, value ], pageIndex) => <Input key={title} action={Actions.setContentField} {...{ title, value, pageIndex }} />
+const post = (posts, pageIndex) => <Posts {...{ posts, pageIndex }}/>
 
+const getInputs = compose(map(input), Object.entries)
+const getPosts = compose(post)
+const getPage = compose(head, filter(noUndefined), mapIndex(selectPage))
 
 export default ({
   api: { cmsData: { pages }},
-  params: { page }
+  params: { pageID }
 }) => {
-
-  const checkName = (value, key) => {
-    if (value.name === page) {
-      // console.log(key)
-      // console.log(value)
-      return value
-    }
-  }
-
-  const pageData = pages.map((value, key) => {
-    if (value.name === page) {
-      return Object.assign({}, {pageIndex: key }, value)
-    }
-  }).filter(x => x !== undefined)[0]
-
-  // console.log(pageData)
-
-  const { pageIndex, hidden, content, posts } = pageData
-
-  const currentContent = Object.entries(content).map(([ title, value ], index) =>
-    <Input key={index} action={Actions.setField} {...{ pageIndex, title, value }}/>
-  )
-
+  const { pageIndex, hidden, content, posts } = getPage(pages, pageID)
   return (
     <main className={Styles.container}>
-      {currentContent}
-      <Posts pageIndex={pageIndex} posts={posts}/>
+      { getInputs(content, pageIndex) }
+      { getPosts(posts, pageIndex) }
     </main>
   )
 }
